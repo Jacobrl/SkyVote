@@ -25,4 +25,4 @@ Code is under the [MIT License](LICENSE). Written content is under [CC BY 4.0](L
 
 ## How AI was used
 
-I built SkyVote with Claude and Claude Code, using AI to help me brainstorm, plan, and draft the README and requirements doc. The designs and final decisions are my own. I reviewed every AI contribution, checked facts against sources like NASA, and I'm fully responsible for the result. My approach to using AI follows Anthropic's AI Fluency course.
+I built SkyVote with Claude and Claude Code, using AI to help me brainstorm, plan, and draft the README and requirements doc. The designs and final decisions are my own. I reviewed every AI contribution, check facts against sources like NASA, and I'm fully responsible for the result. My approach to using AI follows Anthropic's AI Fluency course.
