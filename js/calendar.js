@@ -2,8 +2,10 @@
 //
 // Main phase times come from the US Naval Observatory (USNO) API:
 // https://aa.usno.navy.mil/api/moon/phases/date?date=2026-10-20&nump=8
-// Times are in Universal Time (UTC). The page shows every date and
-// time in UTC, so every visitor sees the same calendar.
+// USNO gives these times in Universal Time (UTC), as stated in the
+// "Time Format" note on https://aa.usno.navy.mil/data/MoonPhases.
+// The page shows every date and time in UTC, so every visitor sees the
+// same calendar. Plan: switch to the visitor's own time zone at launch.
 const PHASES = [
   { name: "Full Moon",     utc: "2026-10-26T04:12Z" },
   { name: "Last Quarter",  utc: "2026-11-01T20:28Z" },
@@ -157,4 +159,23 @@ function buildCalendar() {
   container.replaceChildren(table);
 }
 
+// Accessibility (WCAG 2.2, 1.4.13 Content on Hover or Focus): pressing
+// Escape hides the open tooltip without moving the mouse or focus.
+// It comes back the next time the visitor hovers over or tabs to a day.
+function enableTooltipDismiss() {
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    document.querySelectorAll(".day:hover, .day:focus").forEach((day) => {
+      day.classList.add("tip-dismissed");
+    });
+  });
+
+  const reset = (event) => event.currentTarget.classList.remove("tip-dismissed");
+  document.querySelectorAll(".day").forEach((day) => {
+    day.addEventListener("mouseleave", reset);
+    day.addEventListener("blur", reset);
+  });
+}
+
 buildCalendar();
+enableTooltipDismiss();

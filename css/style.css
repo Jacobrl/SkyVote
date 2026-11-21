@@ -176,7 +176,17 @@ td {
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.15s ease;
-  pointer-events: none;
+}
+
+/* Invisible bridge over the gap between the day and its tooltip, so the
+   mouse can move onto the tooltip without it disappearing (WCAG 1.4.13). */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
 }
 
 .tooltip strong {
@@ -188,6 +198,12 @@ td {
 .day:focus .tooltip {
   visibility: visible;
   opacity: 1;
+}
+
+/* Hidden after Escape until the visitor moves away and comes back. */
+.day.tip-dismissed .tooltip {
+  visibility: hidden;
+  opacity: 0;
 }
 
 /* Keep tooltips on the edge columns inside the page. */

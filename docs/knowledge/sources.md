@@ -20,8 +20,9 @@ All pages were read on 2026-11-20.
 - **`usno`**: Exact UTC times of the main phases for late October to mid
   December 2026, read from the API at
   `https://aa.usno.navy.mil/api/moon/phases/date?date=2026-10-20&nump=8`.
-  These times are in `js/calendar.js`. The response did not state a time
-  zone. We treat the times as UTC, which still needs checking.
+  These times are in `js/calendar.js`. The API response does not state a
+  time zone, but the "Time Format" note on the USNO Moon Phases page says
+  its times are in Universal Time (UTC). Confirmed 2026-11-20.
 - **`britannica`**: Short article by the Britannica editors, last revised
   by Erik Gregersen (2026-11-09). Used for the eight phases, the
   Sun-Earth-Moon positions and roughly how much of the Moon is lit. Also
