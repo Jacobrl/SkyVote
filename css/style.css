@@ -147,43 +147,6 @@ td {
   outline-offset: 2px;
 }
 
-/* Key */
-
-.key {
-  margin-top: 2rem;
-}
-
-.key h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.75rem;
-}
-
-.key ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.5rem;
-}
-
-.key li {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.key .moon {
-  margin: 0;
-  width: 2rem;
-  height: 2rem;
-  flex-shrink: 0;
-}
-
-.note {
-  color: var(--muted);
-  font-size: 0.875rem;
-}
-
 .site-footer {
   margin-top: 3rem;
   padding-bottom: 2rem;

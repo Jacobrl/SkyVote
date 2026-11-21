@@ -129,22 +129,4 @@ function buildCalendar() {
   container.replaceChildren(table);
 }
 
-function buildKey() {
-  const list = document.getElementById("key-list");
-  PHASES.filter((p) => p.date.getUTCFullYear() === YEAR && p.date.getUTCMonth() === MONTH)
-    .forEach((p) => {
-      const li = document.createElement("li");
-      const when = p.date.toLocaleString(undefined, {
-        weekday: "long", month: "long", day: "numeric",
-        hour: "numeric", minute: "2-digit", timeZone: "UTC",
-      });
-      li.innerHTML = `${moonSvg(p.name)}<span><strong>${p.name}</strong>: ${when}</span>`;
-      list.appendChild(li);
-    });
-
-  document.getElementById("timezone-note").textContent =
-    "Moon drawings show the view from the Northern Hemisphere.";
-}
-
 buildCalendar();
-buildKey();
