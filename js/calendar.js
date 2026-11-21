@@ -2,9 +2,8 @@
 //
 // Main phase times come from the US Naval Observatory (USNO) API:
 // https://aa.usno.navy.mil/api/moon/phases/date?date=2026-10-20&nump=8
-// Times are in Universal Time (UT). The browser converts them to the
-// visitor's local time zone, so a phase can fall on a different date
-// depending on where you are.
+// Times are in Universal Time (UTC). The page shows every date and
+// time in UTC, so every visitor sees the same calendar.
 const PHASES = [
   { name: "Full Moon",     utc: "2026-10-26T04:12Z" },
   { name: "Last Quarter",  utc: "2026-11-01T20:28Z" },
@@ -40,19 +39,19 @@ const SHAPES = {
   "Waning Crescent": { lit: 0.25, waxing: false },
 };
 
-function sameLocalDay(a, b) {
-  return a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
+function sameUtcDay(a, b) {
+  return a.getUTCFullYear() === b.getUTCFullYear() &&
+    a.getUTCMonth() === b.getUTCMonth() &&
+    a.getUTCDate() === b.getUTCDate();
 }
 
-// Returns the phase name for a local calendar day, and the main phase
+// Returns the phase name for a UTC calendar day, and the main phase
 // event if one happens that day.
 function phaseForDay(day) {
-  const event = PHASES.find((p) => sameLocalDay(p.date, day));
+  const event = PHASES.find((p) => sameUtcDay(p.date, day));
   if (event) return { name: event.name, event };
 
-  const noon = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 12);
+  const noon = new Date(Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate(), 12));
   let last = null;
   for (const p of PHASES) {
     if (p.date <= noon) last = p;
@@ -83,14 +82,14 @@ function moonSvg(phaseName) {
 }
 
 function formatTime(date) {
-  return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", timeZone: "UTC" });
 }
 
 function buildCalendar() {
   const container = document.getElementById("calendar");
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const first = new Date(YEAR, MONTH, 1);
-  const daysInMonth = new Date(YEAR, MONTH + 1, 0).getDate();
+  const first = new Date(Date.UTC(YEAR, MONTH, 1));
+  const daysInMonth = new Date(Date.UTC(YEAR, MONTH + 1, 0)).getUTCDate();
   const today = new Date();
 
   const table = document.createElement("table");
@@ -100,16 +99,16 @@ function buildCalendar() {
   const body = document.createElement("tbody");
 
   let row = document.createElement("tr");
-  for (let i = 0; i < first.getDay(); i++) {
+  for (let i = 0; i < first.getUTCDay(); i++) {
     row.appendChild(document.createElement("td"));
   }
 
   for (let d = 1; d <= daysInMonth; d++) {
-    const day = new Date(YEAR, MONTH, d);
+    const day = new Date(Date.UTC(YEAR, MONTH, d));
     const { name, event } = phaseForDay(day);
     const cell = document.createElement("td");
     cell.className = "day" + (event ? " main-phase" : "");
-    if (sameLocalDay(day, today)) {
+    if (sameUtcDay(day, today)) {
       cell.classList.add("today");
       cell.setAttribute("aria-current", "date");
     }
@@ -120,7 +119,7 @@ function buildCalendar() {
       ${event ? `<span class="time">${formatTime(event.date)}</span>` : ""}`;
     row.appendChild(cell);
 
-    if (day.getDay() === 6 || d === daysInMonth) {
+    if (day.getUTCDay() === 6 || d === daysInMonth) {
       body.appendChild(row);
       row = document.createElement("tr");
     }
@@ -132,20 +131,19 @@ function buildCalendar() {
 
 function buildKey() {
   const list = document.getElementById("key-list");
-  PHASES.filter((p) => p.date.getFullYear() === YEAR && p.date.getMonth() === MONTH)
+  PHASES.filter((p) => p.date.getUTCFullYear() === YEAR && p.date.getUTCMonth() === MONTH)
     .forEach((p) => {
       const li = document.createElement("li");
       const when = p.date.toLocaleString(undefined, {
         weekday: "long", month: "long", day: "numeric",
-        hour: "numeric", minute: "2-digit",
+        hour: "numeric", minute: "2-digit", timeZone: "UTC",
       });
       li.innerHTML = `${moonSvg(p.name)}<span><strong>${p.name}</strong>: ${when}</span>`;
       list.appendChild(li);
     });
 
-  const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   document.getElementById("timezone-note").textContent =
-    `Times are shown in your time zone (${zone}). Moon drawings show the view from the Northern Hemisphere.`;
+    "Moon drawings show the view from the Northern Hemisphere.";
 }
 
 buildCalendar();
