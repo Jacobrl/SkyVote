@@ -147,6 +147,67 @@ td {
   outline-offset: 2px;
 }
 
+/* Tooltip: shows a phase explanation on hover or keyboard focus. */
+
+.day {
+  position: relative;
+}
+
+.day:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 16rem;
+  padding: 0.75rem;
+  background: var(--text);
+  color: var(--sky);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.4);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: left;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.tooltip strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.day:hover .tooltip,
+.day:focus .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Keep tooltips on the edge columns inside the page. */
+td:first-child .tooltip {
+  left: 0;
+  transform: none;
+}
+
+td:last-child .tooltip {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    transition: none;
+  }
+}
+
 .site-footer {
   margin-top: 3rem;
   padding-bottom: 2rem;

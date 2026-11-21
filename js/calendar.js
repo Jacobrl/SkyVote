@@ -39,6 +39,28 @@ const SHAPES = {
   "Waning Crescent": { lit: 0.25, waxing: false },
 };
 
+// Plain-language explanation of each phase, shown when a visitor
+// hovers over or tabs to a day. Written in our own words, based on
+// Britannica, "Lunar phase": https://www.britannica.com/science/lunar-phases
+const EXPLANATIONS = {
+  "New Moon":
+    "The Moon is between Earth and the Sun. Sunlight hits the far side of the Moon, so the side facing us is in shadow and we can barely see it. Fun fact: if you stood on the Moon right now, Earth would look full.",
+  "Waxing Crescent":
+    "Only about a quarter of the Moon's face is lit, in a thin curve. “Waxing” means growing: the lit part gets a little bigger each night.",
+  "First Quarter":
+    "Seen from Earth, the Moon and the Sun form a right angle. That means half of the Moon's face is lit and half is dark.",
+  "Waxing Gibbous":
+    "About three-quarters of the Moon's face is lit. The lit part is still growing, on its way to a full Moon.",
+  "Full Moon":
+    "Earth is between the Sun and the Moon. The whole sunlit side of the Moon faces us, so we see a bright, round disk. Fun fact: if you stood on the Moon right now, Earth would look dark.",
+  "Waning Gibbous":
+    "About three-quarters of the Moon's face is still lit, but the full Moon has passed. “Waning” means shrinking: the lit part gets a little smaller each night.",
+  "Last Quarter":
+    "The Moon and the Sun form a right angle again, as seen from Earth. Half of the Moon's face is lit, but it's the opposite half from the first quarter.",
+  "Waning Crescent":
+    "Only about a quarter of the Moon's face is lit, in a thin curve that shrinks each night until the next new Moon.",
+};
+
 function sameUtcDay(a, b) {
   return a.getUTCFullYear() === b.getUTCFullYear() &&
     a.getUTCMonth() === b.getUTCMonth() &&
@@ -108,6 +130,8 @@ function buildCalendar() {
     const { name, event } = phaseForDay(day);
     const cell = document.createElement("td");
     cell.className = "day" + (event ? " main-phase" : "");
+    cell.tabIndex = 0;
+    cell.setAttribute("aria-describedby", `tip-${d}`);
     if (sameUtcDay(day, today)) {
       cell.classList.add("today");
       cell.setAttribute("aria-current", "date");
@@ -116,7 +140,11 @@ function buildCalendar() {
       <span class="date">${d}</span>
       ${moonSvg(name)}
       <span class="phase">${name}</span>
-      ${event ? `<span class="time">${formatTime(event.date)}</span>` : ""}`;
+      ${event ? `<span class="time">${formatTime(event.date)}</span>` : ""}
+      <span class="tooltip" role="tooltip" id="tip-${d}">
+        <strong>${name}</strong>
+        ${EXPLANATIONS[name]}
+      </span>`;
     row.appendChild(cell);
 
     if (day.getUTCDay() === 6 || d === daysInMonth) {
