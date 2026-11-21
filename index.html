@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkyVote: November 2026 Moon Calendar</title>
+  <meta name="description" content="A calendar of the Moon's phases for November 2026.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <p class="brand">SkyVote</p>
+    <h1>The Moon in November 2026</h1>
+    <p class="lede">Each day shows what the Moon looks like that night.</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="calendar-title">
+      <h2 id="calendar-title" class="visually-hidden">November 2026 calendar</h2>
+      <div class="calendar" id="calendar">
+        <noscript>
+          <p>This calendar needs JavaScript to show the Moon's phases.</p>
+        </noscript>
+      </div>
+    </section>
+
+    <section class="key" aria-labelledby="key-title">
+      <h2 id="key-title">Main phases this month</h2>
+      <ul id="key-list"></ul>
+      <p class="note" id="timezone-note"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Phase dates and times:
+      <a href="https://aa.usno.navy.mil/data/MoonPhases">US Naval Observatory, Phases of the Moon</a>.
+    </p>
+    <p>No cookies. No tracking.</p>
+  </footer>
+
+  <script src="js/calendar.js"></script>
+</body>
+</html>
